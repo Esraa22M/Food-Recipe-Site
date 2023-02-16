@@ -1,0 +1,28 @@
+{
+  "name": "food-recipe-site",
+  "version": "1.0.0",
+  "description": "Recipe site [search for recipe and get all ingredinets according to your family number change number as you want add recipe to your bookmarks or add new recipes private to you",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Esraa22M/Food-Recipe-Site.git"
+  },
+  "keywords": [
+    "js",
+    "sass",
+    "parcel"
+  ],
+  "author": "Esraa Mohamed [project idea and startup files credit to jonas]",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Esraa22M/Food-Recipe-Site/issues"
+  },
+  "homepage": "https://github.com/Esraa22M/Food-Recipe-Site#readme",
+  "dependencies": {
+    "parcel": "^2.8.3"
+  }
+}

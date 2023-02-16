@@ -2,7 +2,7 @@
   "name": "food-recipe-site",
   "version": "1.0.0",
   "description": "Recipe site [search for recipe and get all ingredinets according to your family number change number as you want add recipe to your bookmarks or add new recipes private to you",
-  "main": "index.html",
+  "main": "index.js",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html"
@@ -23,6 +23,12 @@
   },
   "homepage": "https://github.com/Esraa22M/Food-Recipe-Site#readme",
   "dependencies": {
-    "parcel": "^2.8.3"
+    "core-js": "^3.28.0",
+    "parcel": "^2.8.3",
+    "regenerator-runtime": "^0.13.11"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.8.3",
+    "process": "^0.11.10"
   }
 }
