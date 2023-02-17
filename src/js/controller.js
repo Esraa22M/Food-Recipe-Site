@@ -1,7 +1,9 @@
 import icons from '../img/icons.svg';
+/* helper libraries for code bundling */
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-console.log(icons);
+/* import model function */
+import * as model from './model.js';
 const recipeContainer = document.querySelector('.recipe');
 
 const timeout = function (s) {
@@ -28,6 +30,7 @@ const getRecipe = async () => {
   let recipeId = window.location.hash.slice(1);
   if (!recipeId) return;
   try {
+    model.loadRecipe(recipeId);
     renderSpinner(recipeContainer);
 
     const recipesResponse = await fetch(
