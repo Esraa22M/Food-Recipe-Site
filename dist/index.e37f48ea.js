@@ -587,22 +587,9 @@ const getRecipe = async ()=>{
     /*load recipe */ let recipeId = window.location.hash.slice(1);
     if (!recipeId) return;
     try {
-        await _modelJs.loadRecipe(recipeId);
         renderSpinner(recipeContainer);
-        const recipesResponse = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${recipeId}`);
-        if (!recipesResponse.ok) throw new Error(`${data.statusText}`);
-        const data = await recipesResponse.json();
-        let { recipe  } = data.data;
-        recipe = {
-            id: recipe.id,
-            title: recipe.title,
-            publisher: recipe.publisher,
-            sourceUrl: recipe.source_url,
-            image: recipe.image_url,
-            servings: recipe.servings,
-            coookingTime: recipe.cooking_time,
-            ingredients: recipe.ingredients
-        };
+        await _modelJs.loadRecipe(recipeId);
+        const { recipe  } = _modelJs.state;
         /* rendering recipe */ let markup = `<figure class="recipe__fig">
           <img src="${recipe.image}" alt="${recipe.title}" class="recipe__img" />
           <h1 class="recipe__title">
@@ -2752,7 +2739,7 @@ parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
 const state = {
     recipe: {}
 };
-const loadRecipe = async (id)=>{
+const loadRecipe = async (recipeId)=>{
     try {
         const recipesResponse = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${recipeId}`);
         if (!recipesResponse.ok) throw new Error(`${data.statusText}`);
