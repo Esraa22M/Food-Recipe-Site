@@ -587,7 +587,7 @@ const getRecipe = async ()=>{
     /*load recipe */ let recipeId = window.location.hash.slice(1);
     if (!recipeId) return;
     try {
-        _modelJs.loadRecipe(recipeId);
+        await _modelJs.loadRecipe(recipeId);
         renderSpinner(recipeContainer);
         const recipesResponse = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${recipeId}`);
         if (!recipesResponse.ok) throw new Error(`${data.statusText}`);
@@ -2753,20 +2753,24 @@ const state = {
     recipe: {}
 };
 const loadRecipe = async (id)=>{
-    const recipesResponse = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${recipeId}`);
-    if (!recipesResponse.ok) throw new Error(`${data.statusText}`);
-    const data = await recipesResponse.json();
-    const { recipe  } = data.data;
-    state.recipe = {
-        id: recipe.id,
-        title: recipe.title,
-        publisher: recipe.publisher,
-        sourceUrl: recipe.source_url,
-        image: recipe.image_url,
-        servings: recipe.servings,
-        coookingTime: recipe.cooking_time,
-        ingredients: recipe.ingredients
-    };
+    try {
+        const recipesResponse = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${recipeId}`);
+        if (!recipesResponse.ok) throw new Error(`${data.statusText}`);
+        const data = await recipesResponse.json();
+        const { recipe  } = data.data;
+        state.recipe = {
+            id: recipe.id,
+            title: recipe.title,
+            publisher: recipe.publisher,
+            sourceUrl: recipe.source_url,
+            image: recipe.image_url,
+            servings: recipe.servings,
+            coookingTime: recipe.cooking_time,
+            ingredients: recipe.ingredients
+        };
+    } catch (err) {
+        console.log(err);
+    }
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["d8XZh","aenu9"], "aenu9", "parcelRequiref398")
