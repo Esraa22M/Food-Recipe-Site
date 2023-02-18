@@ -24,6 +24,7 @@
   "homepage": "https://github.com/Esraa22M/Food-Recipe-Site#readme",
   "dependencies": {
     "core-js": "^3.28.0",
+    "fractional": "^1.0.0",
     "parcel": "^2.8.3",
     "regenerator-runtime": "^0.13.11"
   },

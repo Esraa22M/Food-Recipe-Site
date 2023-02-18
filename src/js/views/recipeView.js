@@ -1,4 +1,6 @@
 import icons from '../../img/icons.svg';
+import { Fraction } from 'fractional';
+console.log(Fraction);
 class RecipeView {
   #parentElement = document.querySelector('.recipe');
   #data;
@@ -79,7 +81,9 @@ class RecipeView {
             <svg class="recipe__icon">
               <use href="${icons}#icon-check"></use>
             </svg>
-            <div class="recipe__quantity">${ingred.quantity}</div>
+            <div class="recipe__quantity">${new Fraction(
+              ingred.quantity
+            ).toString()}</div>
             <div class="recipe__description">
               <span class="recipe__unit">${ingred.unit}</span>
               ${ingred.description}
