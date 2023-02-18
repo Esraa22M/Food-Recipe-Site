@@ -2631,7 +2631,6 @@ parcelHelpers.defineInteropFlag(exports);
 var _iconsSvg = require("../../img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 var _fractional = require("fractional");
-console.log((0, _fractional.Fraction));
 class RecipeView {
     #parentElement = document.querySelector(".recipe");
     #data;
@@ -2696,22 +2695,8 @@ class RecipeView {
         <div class="recipe__ingredients">
           <h2 class="heading--2">Recipe ingredients</h2>
           <ul class="recipe__ingredient-list">
-          ${this.#data.ingredients.map((ingred)=>{
-            console.log(ingred);
-            return `<li class="recipe__ingredient">
-            <svg class="recipe__icon">
-              <use href="${0, _iconsSvgDefault.default}#icon-check"></use>
-            </svg>
-            <div class="recipe__quantity">${ingred.quantity ? new (0, _fractional.Fraction)(ingred.quantity).toString() : ""}</div>
-            <div class="recipe__description">
-              <span class="recipe__unit">${ingred.unit}</span>
-              ${ingred.description}
-            </div>
-          </li>`;
-        }).join("")}
-
-       
-          </ul>
+          ${this.#data.ingredients.map(this.#generateIngredient).join("")}
+</ul>
         </div>
 
         <div class="recipe__directions">
@@ -2734,6 +2719,18 @@ class RecipeView {
         </div>
           `;
     }
+    #generateIngredient = function(ingred) {
+        return `<li class="recipe__ingredient">
+            <svg class="recipe__icon">
+              <use href="${0, _iconsSvgDefault.default}#icon-check"></use>
+            </svg>
+            <div class="recipe__quantity">${ingred.quantity ? new (0, _fractional.Fraction)(ingred.quantity).toString() : ""}</div>
+            <div class="recipe__description">
+              <span class="recipe__unit">${ingred.unit}</span>
+              ${ingred.description}
+            </div>
+          </li>`;
+    };
     renderSpinner = function() {
         const markup = `<div class="spinner">
           <svg>
