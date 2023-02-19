@@ -3,6 +3,8 @@ import { Fraction } from 'fractional';
 class RecipeView {
   #parentElement = document.querySelector('.recipe');
   #data;
+  #errorMessage = 'This recipe is not available please try another one';
+  #successMessage = '';
   render(data) {
     this.#data = data;
     this.#clear();
@@ -99,7 +101,7 @@ class RecipeView {
         </div>
           `;
   }
-  #generateIngredient = function (ingred) {
+  #generateIngredient(ingred) {
     return `<li class="recipe__ingredient">
             <svg class="recipe__icon">
               <use href="${icons}#icon-check"></use>
@@ -112,16 +114,43 @@ class RecipeView {
               ${ingred.description}
             </div>
           </li>`;
-  };
-  renderSpinner = function () {
+  }
+  renderSpinner() {
     const markup = `<div class="spinner">
           <svg>
             <use href="${icons}#icon-loader"></use>
           </svg>
         </div>`;
-    this.#parentElement.innerHTML = ``;
+    this.#clear();
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
-  };
+  }
+  /* error handling */
+  renderError(message = this.#errorMessage) {
+    const markup = ` 
+    <div class="error">
+      <div>
+        <svg>
+          <use href="${icons}#icon-alert-triangle"></use>
+        </svg>
+      </div>
+      <p>${message}</p>
+    </div>;
+    `;
+    this.#clear();
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
+  renderSucessMessage(message = this.#successMessage) {
+    let markup = `<div class="message">
+        <div>
+          <svg>
+            <use href="${icons}#icon-smile"></use>
+          </svg>
+        </div>
+        <p>${this.#successMessage}</p>
+        `;
+    this.#clear();
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
   /* publisher needs access to subscriber which is handler */
   addHandlerRender = handler => {
     ['hashchange', 'load'].forEach(event =>
