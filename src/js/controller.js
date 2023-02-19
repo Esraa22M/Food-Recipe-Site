@@ -19,6 +19,7 @@ const getRecipe = async () => {
     console.log(err);
   }
 };
-['hashchange', 'load'].forEach(event =>
-  window.addEventListener(event, getRecipe)
-);
+const init = () => {
+  recipeView.addHandlerRender(getRecipe);
+};
+init();

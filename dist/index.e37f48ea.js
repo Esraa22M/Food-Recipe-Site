@@ -576,10 +576,10 @@ const getRecipe = async ()=>{
         console.log(err);
     }
 };
-[
-    "hashchange",
-    "load"
-].forEach((event)=>window.addEventListener(event, getRecipe));
+const init = ()=>{
+    (0, _recipeViewJsDefault.default).addHandlerRender(getRecipe);
+};
+init();
 
 },{"core-js/modules/es.regexp.flags.js":"gSXXb","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./model.js":"Y4A21","./views/recipeView.js":"l60JC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gSXXb":[function(require,module,exports) {
 var global = require("b447fe5af96e2597");
@@ -2764,6 +2764,12 @@ class RecipeView {
         </div>`;
         this.#parentElement.innerHTML = ``;
         this.#parentElement.insertAdjacentHTML("afterbegin", markup);
+    };
+    /* publisher needs access to subscriber which is handler */ addHandlerRender = (handler)=>{
+        [
+            "hashchange",
+            "load"
+        ].forEach((event)=>window.addEventListener(event, handler));
     };
 }
 exports.default = new RecipeView();

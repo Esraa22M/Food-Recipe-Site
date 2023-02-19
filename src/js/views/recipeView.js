@@ -122,5 +122,11 @@ class RecipeView {
     this.#parentElement.innerHTML = ``;
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   };
+  /* publisher needs access to subscriber which is handler */
+  addHandlerRender = handler => {
+    ['hashchange', 'load'].forEach(event =>
+      window.addEventListener(event, handler)
+    );
+  };
 }
 export default new RecipeView();
