@@ -564,8 +564,9 @@ var _runtime = require("regenerator-runtime/runtime");
 /* import model function */ var _modelJs = require("./model.js");
 var _recipeViewJs = require("./views/recipeView.js");
 var _recipeViewJsDefault = parcelHelpers.interopDefault(_recipeViewJs);
-const recipeContainer = document.querySelector(".recipe");
-const getRecipe = async ()=>{
+var _searchViewJs = require("./views/searchView.js");
+var _searchViewJsDefault = parcelHelpers.interopDefault(_searchViewJs);
+/* handle query one single recipe */ const getRecipe = async ()=>{
     /*load recipe */ let recipeId = window.location.hash.slice(1);
     if (!recipeId) return;
     try {
@@ -576,12 +577,21 @@ const getRecipe = async ()=>{
         (0, _recipeViewJsDefault.default).renderError();
     }
 };
+/*------handle search for recipe------- */ const controlSearchRecipe = async ()=>{
+    try {
+        await _modelJs.loadSearchResult("pizza");
+        console.log(_modelJs.state.serachRecipe.searchResults);
+    } catch (err) {
+        console.log(err);
+    }
+};
+controlSearchRecipe();
 const init = ()=>{
     (0, _recipeViewJsDefault.default).addHandlerRender(getRecipe);
 };
 init();
 
-},{"core-js/modules/es.regexp.flags.js":"gSXXb","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./model.js":"Y4A21","./views/recipeView.js":"l60JC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gSXXb":[function(require,module,exports) {
+},{"core-js/modules/es.regexp.flags.js":"gSXXb","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./model.js":"Y4A21","./views/recipeView.js":"l60JC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/searchView.js":"9OQAM"}],"gSXXb":[function(require,module,exports) {
 var global = require("b447fe5af96e2597");
 var DESCRIPTORS = require("a3dada1c8afab0c8");
 var defineBuiltInAccessor = require("48411261f1f2b78a");
@@ -2562,14 +2572,19 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
+parcelHelpers.export(exports, "loadSearchResult", ()=>loadSearchResult);
 var _config = require("./config");
 var _helper = require("./helper");
 const state = {
-    recipe: {}
+    recipe: {},
+    serachRecipe: {
+        query: "",
+        searchResults: []
+    }
 };
 const loadRecipe = async (recipeId)=>{
     try {
-        const data = await (0, _helper.getRecipe)(`${(0, _config.BASE_URL)}/${recipeId}`);
+        const data = await (0, _helper.getRecipe)(`${(0, _config.BASE_URL)}${recipeId}`);
         const { recipe  } = data.data;
         state.recipe = {
             id: recipe.id,
@@ -2585,13 +2600,29 @@ const loadRecipe = async (recipeId)=>{
         throw err;
     }
 };
+const loadSearchResult = async (query)=>{
+    try {
+        state.serachRecipe.query = query;
+        const data = await (0, _helper.getRecipe)(`${(0, _config.BASE_URL)}?search=${query}`);
+        state.serachRecipe.searchResults = data.data.recipes.map((recipe)=>{
+            return {
+                id: recipe.id,
+                title: recipe.title,
+                publisher: recipe.publisher,
+                image: recipe.image_url
+            };
+        });
+    } catch (err) {
+        throw err;
+    }
+};
 
 },{"./config":"k5Hzs","./helper":"lVRAz","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k5Hzs":[function(require,module,exports) {
 /*--module for project configuration-- */ /* reusable variables */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "BASE_URL", ()=>BASE_URL);
 parcelHelpers.export(exports, "TIME_OUT_VALUE", ()=>TIME_OUT_VALUE);
-const BASE_URL = "https://forkify-api.herokuapp.com/api/v2/recipes";
+const BASE_URL = "https://forkify-api.herokuapp.com/api/v2/recipes/";
 const TIME_OUT_VALUE = 10;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
@@ -3092,6 +3123,17 @@ Fraction.primeFactors = function(n) {
 };
 module.exports.Fraction = Fraction;
 
-},{}]},["d8XZh","aenu9"], "aenu9", "parcelRequiref398")
+},{}],"9OQAM":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class SearchView {
+    #parentElement = document.querySelector(".search");
+    getQuery() {
+        return this.#parentElement.querySelector(".search__field").value;
+    }
+}
+exports.default = new SearchView();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["d8XZh","aenu9"], "aenu9", "parcelRequiref398")
 
 //# sourceMappingURL=index.e37f48ea.js.map

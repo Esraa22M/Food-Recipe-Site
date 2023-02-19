@@ -4,7 +4,8 @@ import 'regenerator-runtime/runtime';
 /* import model function */
 import * as model from './model.js';
 import recipeView from './views/recipeView.js';
-const recipeContainer = document.querySelector('.recipe');
+import searchView from './views/searchView.js';
+/* handle query one single recipe */
 const getRecipe = async () => {
   /*load recipe */
   let recipeId = window.location.hash.slice(1);
@@ -19,6 +20,16 @@ const getRecipe = async () => {
     recipeView.renderError();
   }
 };
+/*------handle search for recipe------- */
+const controlSearchRecipe = async () => {
+  try {
+    await model.loadSearchResult('pizza');
+    console.log(model.state.serachRecipe.searchResults);
+  } catch (err) {
+    console.log(err);
+  }
+};
+controlSearchRecipe();
 const init = () => {
   recipeView.addHandlerRender(getRecipe);
 };
