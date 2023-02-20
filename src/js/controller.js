@@ -5,6 +5,7 @@ import 'regenerator-runtime/runtime';
 import * as model from './model.js';
 import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
+import resultsView from './views/resultsView.js';
 /* handle query one single recipe */
 const getRecipe = async () => {
   /*load recipe */
@@ -23,14 +24,21 @@ const getRecipe = async () => {
 /*------handle search for recipe------- */
 const controlSearchRecipe = async () => {
   try {
-    await model.loadSearchResult('pizza');
+    resultsView.renderSpinner();
+    /* get search data */
+    const query = searchView.getQuery();
+    if (!query) return;
+    await model.loadSearchResult(query);
     console.log(model.state.serachRecipe.searchResults);
+    /* clear input field */
+    model;
   } catch (err) {
     console.log(err);
   }
 };
 controlSearchRecipe();
 const init = () => {
+  searchView.addHandlerSearch(controlSearchRecipe);
   recipeView.addHandlerRender(getRecipe);
 };
 init();
