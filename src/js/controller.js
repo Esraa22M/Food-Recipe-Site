@@ -27,11 +27,14 @@ const controlSearchRecipe = async () => {
     resultsView.renderSpinner();
     /* get search data */
     const query = searchView.getQuery();
+    /* clear input field */
+
+    searchView._clearSearchInput();
+
     if (!query) return;
     await model.loadSearchResult(query);
     console.log(model.state.serachRecipe.searchResults);
-    /* clear input field */
-    model;
+    resultsView.render(model.state.serachRecipe.searchResults);
   } catch (err) {
     console.log(err);
   }
