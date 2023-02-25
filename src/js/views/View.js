@@ -52,4 +52,14 @@ export default class View {
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
+  updateServingsHandler(handler) {
+    this._parentElement.addEventListener('click', e => {
+      const button = e.target.closest('.btn--update-servings');
+      if (!button) return;
+      console.log(button);
+      const newServings = +button.dataset.servingsTo;
+      console.log(newServings);
+      if (newServings > 0) handler(newServings);
+    });
+  }
 }

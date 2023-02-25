@@ -40,7 +40,6 @@ class PaginationView extends View {
   _generateMarkup() {
     const { currentPage, resultsPerPage, searchResults } = this._data;
     const numberOfPages = Math.ceil(searchResults.length / resultsPerPage);
-    console.log(numberOfPages);
     //we have one page and there is other pages
     if (currentPage === 1 && numberOfPages > 1) {
       return this.#nextButton();

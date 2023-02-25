@@ -53,3 +53,13 @@ export const getSearchResultsPage = function (
   const end = page * state.serachRecipe.resultsPerPage;
   return state.serachRecipe.searchResults.slice(start, end);
 };
+/* updating servings number */
+export const updatingServings = newServingNumber => {
+  //ingredients
+  console.log(state.recipe);
+  state.recipe.ingredients.forEach(element => {
+    element.quantity =
+      (element.quantity * newServingNumber) / state.recipe.servings;
+  });
+  state.recipe.servings = newServingNumber;
+};

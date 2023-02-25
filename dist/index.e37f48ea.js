@@ -596,13 +596,19 @@ var _paginationViewJsDefault = parcelHelpers.interopDefault(_paginationViewJs);
     }
 };
 const controlPagination = function(gotoPage) {
-    console.log("control pagination");
     (0, _resultsViewJsDefault.default).render(_modelJs.getSearchResultsPage(gotoPage));
     (0, _paginationViewJsDefault.default).render(_modelJs.state.serachRecipe);
 };
+const controlServings = function(newServings) {
+    //updating recipe state change the servings number.
+    _modelJs.updatingServings(newServings);
+    //rerender state recipe
+    (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
+};
 const init = ()=>{
-    (0, _searchViewJsDefault.default).addHandlerSearch(controlSearchRecipe);
     (0, _recipeViewJsDefault.default).addHandlerRender(getRecipe);
+    (0, _recipeViewJsDefault.default).updateServingsHandler(controlServings);
+    (0, _searchViewJsDefault.default).addHandlerSearch(controlSearchRecipe);
     (0, _paginationViewJsDefault.default).addClickHandler(controlPagination);
 };
 init();
@@ -2590,6 +2596,7 @@ parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
 parcelHelpers.export(exports, "loadSearchResult", ()=>loadSearchResult);
 parcelHelpers.export(exports, "getSearchResultsPage", ()=>getSearchResultsPage);
+parcelHelpers.export(exports, "updatingServings", ()=>updatingServings);
 var _config = require("./config");
 var _helper = require("./helper");
 const state = {
@@ -2640,6 +2647,14 @@ const getSearchResultsPage = function(page = state.serachRecipe.currentPage) {
     const start = (page - 1) * state.serachRecipe.resultsPerPage;
     const end = page * state.serachRecipe.resultsPerPage;
     return state.serachRecipe.searchResults.slice(start, end);
+};
+const updatingServings = (newServingNumber)=>{
+    //ingredients
+    console.log(state.recipe);
+    state.recipe.ingredients.forEach((element)=>{
+        element.quantity = element.quantity * newServingNumber / state.recipe.servings;
+    });
+    state.recipe.servings = newServingNumber;
 };
 
 },{"./config":"k5Hzs","./helper":"lVRAz","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k5Hzs":[function(require,module,exports) {
@@ -2745,12 +2760,12 @@ class RecipeView extends (0, _viewDefault.default) {
             <span class="recipe__info-text">servings</span>
 
             <div class="recipe__info-buttons">
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--update-servings" data-servings-to="${this._data.servings - 1}">
                 <svg>
                   <use href="${0, _iconsSvgDefault.default}#icon-minus-circle"></use>
                 </svg>
               </button>
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--update-servings" data-servings-to="${this._data.servings + 1}">
                 <svg>
                   <use href="${0, _iconsSvgDefault.default}#icon-plus-circle"></use>
                 </svg>
@@ -3157,6 +3172,16 @@ class View {
         this._clear();
         this._parentElement.insertAdjacentHTML("afterbegin", markup);
     }
+    updateServingsHandler(handler) {
+        this._parentElement.addEventListener("click", (e)=>{
+            const button = e.target.closest(".btn--update-servings");
+            if (!button) return;
+            console.log(button);
+            const newServings = +button.dataset.servingsTo;
+            console.log(newServings);
+            if (newServings > 0) handler(newServings);
+        });
+    }
 }
 exports.default = View;
 
@@ -3254,7 +3279,6 @@ class PaginationView extends (0, _viewDefault.default) {
     _generateMarkup() {
         const { currentPage , resultsPerPage , searchResults  } = this._data;
         const numberOfPages = Math.ceil(searchResults.length / resultsPerPage);
-        console.log(numberOfPages);
         //we have one page and there is other pages
         if (currentPage === 1 && numberOfPages > 1) return this.#nextButton();
         // last page
