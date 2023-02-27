@@ -13,6 +13,40 @@ export default class View {
       this._generateMarkup()
     );
   }
+  update(data) {
+    if (!data || (Array.isArray(data) && data.length === 0))
+      return this.renderError();
+    this._data = data;
+    const newMarkup = this._generateMarkup();
+    /* Dom object that does not live in the dom but it lives in the memory */
+    const newDomObject = document
+      .createRange()
+      .createContextualFragment(newMarkup);
+    const newElements = Array.from(newDomObject.querySelectorAll('*'));
+    console.log(newElements);
+    const currentElements = Array.from(
+      this._parentElement.querySelectorAll('*')
+    );
+    newElements.forEach((elem, index) => {
+      const currElement = currentElements[index];
+      /*--Update that changes text--*/
+      if (
+        !elem.isEqualNode(currElement) &&
+        elem.firstChild?.nodeValue.trim() !== ''
+      ) {
+        currElement.textContent = elem.textContent;
+      }
+      /*--update changes the attributes-- */
+      if (!elem.isEqualNode(currElement)) {
+        Array.from(elem.attributes).forEach(currentAttribute => {
+          currElement.setAttribute(
+            currentAttribute.name,
+            currentAttribute.value
+          );
+        });
+      }
+    });
+  }
   _clear() {
     this._parentElement.innerHTML = ``;
   }
