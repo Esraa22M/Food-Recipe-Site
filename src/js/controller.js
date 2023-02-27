@@ -14,7 +14,7 @@ const getRecipe = async () => {
   if (!recipeId) return;
   try {
     recipeView.renderSpinner();
-
+    resultsView.update(model.getSearchResultsPage());
     await model.loadRecipe(recipeId);
     /* rendering recipe */
     recipeView.render(model.state.recipe);
