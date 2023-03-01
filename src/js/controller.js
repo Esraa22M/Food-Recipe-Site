@@ -7,6 +7,7 @@ import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
 import paginationView from './views/paginationView.js';
+import { Function } from 'core-js';
 /* handle query one single recipe */
 const getRecipe = async () => {
   /*load recipe */
@@ -54,10 +55,17 @@ const controlServings = function (newServings) {
   // recipeView.render(model.state.recipe);
   recipeView.update(model.state.recipe);
 };
+/* add bookmark control */
+const addBookmarksController = function () {
+  if (!model.state.recipe.bookmarked) model.addToBookMarks(model.state.recipe);
+  else model.deleteFromBookMarks(model.state.recipe.id);
+  recipeView.update(model.state.recipe);
+};
 const init = () => {
   recipeView.addHandlerRender(getRecipe);
   recipeView.updateServingsHandler(controlServings);
   searchView.addHandlerSearch(controlSearchRecipe);
   paginationView.addClickHandler(controlPagination);
+  recipeView.addBookmarkHandler(addBookmarksController);
 };
 init();

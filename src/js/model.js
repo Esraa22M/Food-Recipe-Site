@@ -8,6 +8,7 @@ export const state = {
     currentPage: 1,
     resultsPerPage: RECIPES_PER_PAGE,
   },
+  bookmarks: [],
 };
 /*--load recipe from forkify api-- */
 export const loadRecipe = async recipeId => {
@@ -24,6 +25,9 @@ export const loadRecipe = async recipeId => {
       coookingTime: recipe.cooking_time,
       ingredients: recipe.ingredients,
     };
+    if (state.bookmarks.some(item => item.id === recipeId)) {
+      state.recipe.bookmarked = true;
+    } else state.recipe.bookmarked = false;
   } catch (err) {
     throw err;
   }
@@ -41,6 +45,7 @@ export const loadSearchResult = async query => {
         image: recipe.image_url,
       };
     });
+    state.serachRecipe.currentPage = 1;
   } catch (err) {
     throw err;
   }
@@ -62,4 +67,21 @@ export const updatingServings = newServingNumber => {
       (element.quantity * newServingNumber) / state.recipe.servings;
   });
   state.recipe.servings = newServingNumber;
+};
+
+/* add bookmarks */
+export const addToBookMarks = function (recipe) {
+  state.bookmarks.push(recipe);
+  //mark current recipe as bookmark
+  if (recipe.id === state.recipe.id) {
+    state.recipe.bookmarked = true;
+  }
+};
+/*delete bookmarks */
+export const deleteFromBookMarks = function (id) {
+  console.log('gggggggggg');
+  state.bookmarks = state.bookmarks.filter(bookmark => bookmark.id !== id);
+  if (state.recipe.id === id) {
+    state.recipe.bookmarked = false;
+  }
 };
